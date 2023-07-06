@@ -6,30 +6,6 @@ console.log(galleryItems);
 const fatherImages = document.querySelector(".gallery");
 const imgMarkUp = createImagesCards(galleryItems);
 
-fatherImages.insertAdjacentHTML("afterbegin", imgMarkUp);
-
-fatherImages.addEventListener("click", openImgs);
-
-function openImgs(event) {
-  event.preventDefault();
-  const imgValue = event.target.dataset.source;
-  const nodeNameImg = event.target.nodeName;
-
-  if (nodeNameImg !== "IMG") {
-    return;
-  }
-  const instance = basicLightbox.create(`
-      <img src="${imgValue}" width="800" height="600">
-  `);
-  instance.show();
-
-  window.addEventListener("keydown", (event) => {
-    if (event.code === "Escape") {
-      instance.close();
-    }
-  });
-}
-
 function createImagesCards(imgs) {
   return imgs
     .map(({ preview, original, description }) => {
@@ -47,4 +23,34 @@ function createImagesCards(imgs) {
     `;
     })
     .join("");
+}
+
+fatherImages.insertAdjacentHTML("afterbegin", imgMarkUp);
+
+fatherImages.addEventListener("click", openImgs);
+
+function openImgs(event) {
+  event.preventDefault();
+
+  const imgValue = event.target.dataset.source;
+  const nodeNameImg = event.target.nodeName;
+  const qwe = event.target.alt;
+
+  if (nodeNameImg !== "IMG") {
+    return;
+  }
+
+  const image = basicLightbox.create(
+    `
+      <img src="${imgValue}" alt ="${qwe}" width="800" height="600" />
+    `,
+    {
+      onShow: (image) => window.addEventListener("keydown", closeModal),
+      onClose: (image) => window.removeEventListener("keydown", closeModal),
+    }
+  );
+  image.show();
+  function closeModal() {
+    image.close();
+  }
 }
