@@ -34,7 +34,7 @@ function openImgs(event) {
 
   const imgValue = event.target.dataset.source;
   const nodeNameImg = event.target.nodeName;
-  const qwe = event.target.alt;
+  const alt = event.target.alt;
 
   if (nodeNameImg !== "IMG") {
     return;
@@ -42,7 +42,7 @@ function openImgs(event) {
 
   const image = basicLightbox.create(
     `
-      <img src="${imgValue}" alt ="${qwe}" width="800" height="600" />
+      <img src="${imgValue}" alt ="${alt}" width="800" height="600" />
     `,
     {
       onShow: (image) => window.addEventListener("keydown", closeModal),
@@ -50,7 +50,10 @@ function openImgs(event) {
     }
   );
   image.show();
-  function closeModal() {
-    image.close();
-  }
+
+  closeModal();
+}
+
+function closeModal() {
+  image.close();
 }
